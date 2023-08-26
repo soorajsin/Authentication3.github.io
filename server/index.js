@@ -1,11 +1,19 @@
 const express = require("express");
 const app = express();
+require("./DB/Connection");
+const cors = require("cors");
+const router = require("./Routes/route");
 const port = 4000;
 
 
 app.get("/", (req, res) => {
           console.log("Server Created...");
 })
+
+
+app.use(express.json());
+app.use(cors());
+app.use(router);
 
 
 

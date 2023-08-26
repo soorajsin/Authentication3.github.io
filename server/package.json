@@ -11,8 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "env": "^0.0.2",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongoose": "^7.4.5",
+    "validatorjs": "^3.22.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
