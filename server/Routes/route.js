@@ -68,4 +68,62 @@ router.post("/register", async (req, res) => {
 
 
 
+//login user
+router.post("/login", async (req, res) => {
+          // console.log(req.body);
+          try {
+                    const {
+                              email,
+                              password
+                    } = req.body;
+
+                    if (!email || !password) {
+                              throw Error('Please enter all field');
+                    } else {
+                              const checkUser = await userdb.findOne({
+                                        email: email
+                              });
+
+                              if (!checkUser) {
+                                        res.status(422).json({
+                                                  error: "User Not Found..."
+                                        })
+                              } else {
+                                        // console.log("done");
+                                        const isMatchPassword = await bcrypt.compare(password, checkUser.password);
+                                        console.log(isMatchPassword);
+
+                                        if (!isMatchPassword) {
+                                                  res.status(422).json({
+                                                            error: "Password Not Match!"
+                                                  })
+                                        } else {
+                                                  // console.log("done");
+
+
+                                                  //generate token
+                                                  const token = await checkUser.generateAuthToken();
+                                                  // console.log(token);
+
+
+
+                                                  //generate cookie
+                                                  const result = res.cookie("authToken", token, {
+                                                            httpOnly: true,
+                                                            maxAge: 24 * 60 * 60 * 1000
+                                                  });
+
+                                                  console.log(result);
+
+
+                                        }
+                              }
+                    }
+          } catch (error) {
+
+          }
+})
+
+
+
 module.exports = router;
