@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const validate = require("validatorjs");
+const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
 
 
@@ -13,8 +14,8 @@ const userSchema = mongoose.Schema({
                     type: String,
                     unique: true,
                     required: true,
-                    validate(value) {
-                              if (!validate.email("@")) {
+                    validator(value) {
+                              if (!validator.Email("@")) {
                                         throw new Error('Invalid Email');
                               }
                     }
@@ -37,6 +38,22 @@ const userSchema = mongoose.Schema({
                     }
           }]
 });
+
+
+
+//hash password
+userSchema.pre('save', async function (next) {
+          const user = this;
+
+          if (user.isModified('password')) {
+                    user.password = await bcrypt.hash(user.password, 10);
+                    user.cpassword = await bcrypt.hash(user.cpassword, 10);
+          }
+
+          next();
+})
+
+
 
 
 

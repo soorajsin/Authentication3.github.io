@@ -57,12 +57,12 @@ const Register = () => {
       });
 
       const res = await data.json();
-      console.log("res .. " + res);
+      console.log(res);
 
       if (res.status === 201) {
         alert("Are your Sure...");
         setInpVal({
-          ...inpVal,
+          ...inpVal,  
           name: "",
           email: "",
           password: "",

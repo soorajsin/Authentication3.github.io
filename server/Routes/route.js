@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express();
 const userdb = require("../Model/userSchema");
+const bcrypt = require("bcryptjs");
 
 
 
@@ -15,38 +16,53 @@ router.post("/register", async (req, res) => {
                     } = req.body;
 
                     if (!name || !email || !password || !cpassword) {
-                              throw new Error("Plz All filled...")
+                              res.status(422).json({
+                                        error: "Plz fill all details..."
+                              })
                     } else {
+                              // console.log(findUser);
                               const findUser = await userdb.findOne({
                                         email: email
                               });
 
                               if (findUser) {
-                                        throw new Error("Email Already Exist")
+                                        res.status(422).json({
+                                                  error: "Email Already Exist"
+                                        })
                               } else {
+                                        // console.log("done");
                                         if (password !== cpassword) {
-                                                  throw new Error("Password Not Matched..")
+                                                  res.status(422).json({
+                                                            error: "Password and Confirm Password not match!"
+                                                  })
                                         } else {
-                                                  const data = new userdb({
+
+                                                  //hash password 
+                                                  const hashPassword = await bcrypt.hash(password, 10);
+
+                                                  const addData = new userdb({
                                                             name,
                                                             email,
-                                                            password,
-                                                            cpassword
+                                                            password: hashPassword,
+                                                            cpassword: hashPassword
                                                   });
-                                                  const storedata = await data.save();
-
+                                                  const storeData = await addData.save();
+                                                  // console.log(storeData);
 
                                                   res.status(201).json({
                                                             status: 201,
-                                                            message: "Register Successfully....",
-                                                            storedata: storedata
-                                                  });
-                                        }
+                                                            message: "Registration Successfully Done!",
+                                                            storeData
+                                                  })
 
+
+                                        }
                               }
                     }
           } catch (error) {
-
+                    res.status(422).json({
+                              error: "Not add data in database"
+                    })
           }
 });
 
