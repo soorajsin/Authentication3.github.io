@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
 require("./DB/Connection");
-const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const router = require("./Routes/route");
+const cookieParser = require("cookie-parser");
 const port = 4000;
 
 
