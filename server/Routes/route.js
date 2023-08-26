@@ -23,8 +23,26 @@ router.post("/register", async (req, res) => {
 
                               if (findUser) {
                                         throw new Error("Email Already Exist")
-                              }else{
-                                        
+                              } else {
+                                        if (password !== cpassword) {
+                                                  throw new Error("Password Not Matched..")
+                                        } else {
+                                                  const data = new userdb({
+                                                            name,
+                                                            email,
+                                                            password,
+                                                            cpassword
+                                                  });
+                                                  const storedata = await data.save();
+
+
+                                                  res.status(201).json({
+                                                            status: 201,
+                                                            message: "Register Successfully....",
+                                                            storedata: storedata
+                                                  });
+                                        }
+
                               }
                     }
           } catch (error) {
