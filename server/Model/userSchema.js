@@ -48,8 +48,8 @@ userSchema.pre('save', async function (next) {
           const user = this;
 
           if (user.isModified('password')) {
-                    user.password = await bcrypt.hash(user.password, 10);
-                    user.cpassword = await bcrypt.hash(user.cpassword, 10);
+                    user.password = await bcrypt.hash(user.password, 12);
+                    user.cpassword = await bcrypt.hash(user.cpassword, 12);
           }
 
           next();

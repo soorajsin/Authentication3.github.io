@@ -7,9 +7,9 @@ const cookieParser = require("cookie-parser");
 const port = 4000;
 
 
-app.get("/", (req, res) => {
-          console.log("Server Created...");
-})
+// app.get("/", (req, res) => {
+//           console.log("Server Created...");
+// })
 
 
 app.use(express.json());
